@@ -6,7 +6,7 @@ que declara o vetor, chama a função e imprime o resultado.
 
 #include <stdio.h>
 
-int paresNoVetor(int vetor[], int tamanhoVetor);
+int paresNoVetor(int tamanhoVetor, int vetor[tamanhoVetor]);
 
 int main(){
     int vetor[2] = {9, 2};

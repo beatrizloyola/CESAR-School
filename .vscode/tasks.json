@@ -1,0 +1,24 @@
+{
+"version": "2.0.0",
+"tasks": [
+	{
+	"label": "Build C file",
+	"type": "process",
+	"command": "gcc",
+	"args": [
+		"-Wall",
+		"-Wextra",
+		"-g3",
+		"-std=c11",
+		"${file}",
+		"-o",
+		"${fileDirname}\\${fileBasenameNoExtension}.exe"
+	],
+	"group": {
+		"kind": "build",
+		"isDefault": true
+	},
+	"problemMatcher": ["$gcc"]
+	}
+]
+}
