@@ -1,0 +1,15 @@
+Para percorrer matrizes, usar um for dentro do outro
+
+Diagonal principal: i == j
+Diagonal secundária: i + j = n, onde m[n][n]
+Matriz transposta: m[i][j] e n[j][i]
+Matriz identidade: a diagonal principal é 1, o resto é 0
+
+Soma: soma[i][j] = m[i][j] + n[i][j]
+Soma: subtracao[i][j] = m[i][j] - n[i][j]
+
+Multiplicação: linhas da primeira matriz x colunas da segunda matriz
+    c[1][1] = a[1][1] * b[1][1] + a[1][2] * b[2][1]
+    C tem a mesma quantidade de linhas de A e a mesma quantidade de colunas de B
+    Cada linha de A deve ser multiplicada por cada coluna de B
+    !!! Não cai na prova
