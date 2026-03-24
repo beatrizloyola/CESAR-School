@@ -1,0 +1,6 @@
+- Série de caracteres
+- Unidade simples
+- Pode incluir letras, dígitos e caracteres especiais
+- Termina com o caractere NULL ('\0')
+- Acessada por meio de um ponteiro que aponta para o 1o caractere
+- O valor de uma variável de tipo string é o endereço do 1o elemento
