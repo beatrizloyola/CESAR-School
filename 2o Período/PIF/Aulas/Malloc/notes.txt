@@ -1,0 +1,9 @@
+Alocação estática
+- Tamanho fixo
+- Definido antes da execução
+- Mais simples e rápida
+
+Alocação dinâmica
+- Tamanho definido em tempo de execução
+- Mais flexível
+- Requer controle manual (malloc, free)
