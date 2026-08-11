@@ -67,7 +67,6 @@ void criarUsuario(Fila *f){
 
     if (u == NULL){
         printf("Erro na alocação de memória");
-        free(u);
         return;
     }
 
@@ -75,7 +74,7 @@ void criarUsuario(Fila *f){
     char nome[50];
     scanf("%s", nome);
 
-    int fa;
+    int fa = -1;
 
     while (fa != 0 && fa != 1){
         printf("Fã: ");
@@ -105,17 +104,18 @@ void comprarInteira(Fila *f){
     Usuario *u = f->head;
     if (f->qtdInteira > 0){
         printf("%s comprou inteira\n", u->nome);
+        f->qtdInteira = (f->qtdInteira) - 1;
         desenfileirar(f);
-        return;
     } else {
         printf("Inteiras esgotadas.\n");
-        return;
     }
+    return;
 }
 
 void comprarMeia(Fila *f){
     if (f->qtdMeia > 0){
         printf("%s comprou meia\n", f->head->nome);
+        f->qtdMeia = (f->qtdMeia) - 1;
         desenfileirar(f);
     } else {
         printf("Meias esgotadas. Gostaria de comprar uma inteira?");
@@ -206,8 +206,8 @@ void opcaoMenu(Fila *f){
 
 int main(){
     Fila *fila = criarFila();
-    fila->qtdInteira = 7;
-    fila->qtdMeia = 3;
+    fila->qtdInteira = 150000;
+    fila->qtdMeia = 50000;
 
     while (true){
         opcaoMenu(fila);
