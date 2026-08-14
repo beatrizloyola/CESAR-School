@@ -79,8 +79,15 @@ int lerMatriz(FILE *arquivo, Fila *fila, int *linhas, int *colunas){
         char *token = strtok(buffer, " \t\r\n");
 
         while (token != NULL){
+            char *fimToken;
+            long valor = strtol(token, &fimToken, 10);
+
+            if (fimToken == token || *fimToken != '\0'){
+                return 0;
+            }
+
             Node *novo = (Node*)malloc(sizeof(Node));
-            novo->valor = atoi(token);
+            novo->valor = (int)valor;
             enfileirar(fila, novo);
             colunasNaLinha++;
             token = strtok(NULL, " \t\r\n");
