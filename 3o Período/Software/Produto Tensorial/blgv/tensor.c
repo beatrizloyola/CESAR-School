@@ -2,11 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-// Como eu salvo uma matriz de tamanho que eu não conheço ainda?
-    // Cada elemento do texto deve ser lido isoladamente, ignorando espaços
-    // Se estiver na mesma linha do texto, deve estar na mesma linha da matriz
-        // Acabou a linha, passa para a próxima
-
 typedef struct Node {
     int valor;
     struct Node *prox;
@@ -79,9 +74,14 @@ int getTamanhoMatriz(Fila *f){
     return tamanhoInteiro;
 }
 
-int main(){
+int main(int argc, char *argv[]){
+    if (argc != 3){
+        printf("Uso: tensor [namefile1] [namefile2]\n");
+        exit(1);
+    }
+
     FILE *arquivoMatrizA;
-    arquivoMatrizA = fopen("matriz_A.txt", "r");
+    arquivoMatrizA = fopen(argv[1], "r");
 
     if (arquivoMatrizA == NULL){
         printf("Erro ao tentar abrir o arquivo.");
@@ -101,27 +101,28 @@ int main(){
 
     listar(filaArquivoMatrizA);
 
-    int tamanhoarquivoMatrizA = getTamanhoMatriz(filaArquivoMatrizA);
+    int tamanhoArquivoMatrizA = getTamanhoMatriz(filaArquivoMatrizA);
 
-    printf("Tamanho da matriz: [%d][%d]\n", tamanhoarquivoMatrizA, tamanhoarquivoMatrizA);
+    printf("Tamanho da matriz: [%d][%d]\n", tamanhoArquivoMatrizA, tamanhoArquivoMatrizA);
 
     fclose(arquivoMatrizA);
 
-    int matrizA[tamanhoarquivoMatrizA][tamanhoarquivoMatrizA];
+    int **matrizA = (int**)malloc(tamanhoArquivoMatrizA * sizeof(int*));
+    for(int i = 0; i < tamanhoArquivoMatrizA; i++){
+        matrizA[i] = (int*)malloc(tamanhoArquivoMatrizA * sizeof(int));
+    }
 
-    while (filaArquivoMatrizA->head != NULL){
-        for(int i = 0; i < tamanhoarquivoMatrizA; i++){
-            for(int j = 0; i < tamanhoarquivoMatrizA; j++){
-                matrizA[i][j] = filaArquivoMatrizA->head->valor;
-                desenfileirar(filaArquivoMatrizA);
-            }
+    for(int i = 0; i < tamanhoArquivoMatrizA; i++){
+        for(int j = 0; j < tamanhoArquivoMatrizA; j++){
+            matrizA[i][j] = filaArquivoMatrizA->head->valor;
+            desenfileirar(filaArquivoMatrizA);
         }
     }
 
     ///
 
     FILE *arquivoMatrizB;
-    arquivoMatrizB = fopen("matriz_B.txt", "r");
+    arquivoMatrizB = fopen(argv[2], "r");
 
     if (arquivoMatrizB == NULL){
         printf("Erro ao tentar abrir o arquivo.");
@@ -147,14 +148,70 @@ int main(){
 
     fclose(arquivoMatrizB);
 
-    int matrizB[tamanhoArquivoMatrizB][tamanhoArquivoMatrizB];
+    int **matrizB = (int**)malloc(tamanhoArquivoMatrizB * sizeof(int*));
+    for(int i = 0; i < tamanhoArquivoMatrizB; i++){
+        matrizB[i] = (int*)malloc(tamanhoArquivoMatrizB * sizeof(int));
+    }
 
-    while (filaArquivoMatrizB->head != NULL){
-        for(int i = 0; i < tamanhoArquivoMatrizB; i++){
-            for(int j = 0; i < tamanhoArquivoMatrizB; j++){
-                matrizA[i][j] = filaArquivoMatrizB->head->valor;
-                desenfileirar(filaArquivoMatrizB);
+    for(int i = 0; i < tamanhoArquivoMatrizB; i++){
+        for(int j = 0; j < tamanhoArquivoMatrizB; j++){
+            matrizB[i][j] = filaArquivoMatrizB->head->valor;
+            desenfileirar(filaArquivoMatrizB);
+        }
+    }
+
+    ///
+
+    int nA = tamanhoArquivoMatrizA;
+    int nB = tamanhoArquivoMatrizB;
+
+    int **resultado = (int**)malloc((nA*nB) * sizeof(int*));
+    for(int i = 0; i < (nA*nB); i++){
+        resultado[i] = (int*)malloc((nA*nB) * sizeof(int));
+    }
+
+    for(int i = 0; i < nA; i++){
+        for(int j = 0; j < nA; j++){
+            for(int k = 0; k < nB; k++){
+                for(int l = 0; l < nB; l++){
+                    resultado[i*nB+k][j*nB+l] = matrizA[i][j] * matrizB[k][l];
+                }
             }
         }
     }
+
+    FILE *arquivoSaida;
+    arquivoSaida = fopen("tensor_blgv.out", "w");
+
+    if (arquivoSaida == NULL){
+        printf("Erro ao tentar abrir o arquivo.");
+        exit(1);
+    }
+
+    for(int i = 0; i < nA*nB; i++){
+        for(int j = 0; j < nA*nB; j++){
+            fprintf(arquivoSaida, "%d ", resultado[i][j]);
+        }
+        fprintf(arquivoSaida, "\n");
+    }
+
+    fclose(arquivoSaida);
+
+    ///
+
+    for(int i = 0; i < tamanhoArquivoMatrizA; i++){
+        free(matrizA[i]);
+    }
+    free(matrizA);
+
+    for(int i = 0; i < tamanhoArquivoMatrizB; i++){
+        free(matrizB[i]);
+    }
+    free(matrizB);
+    
+    for(int i = 0; i < tamanhoArquivoMatrizA * tamanhoArquivoMatrizB; i++){
+        free(resultado[i]);
+    }
+    free(resultado);
 }
+
