@@ -148,6 +148,8 @@ int main(int argc, char *argv[]){
         }
     }
 
+    free(filaArquivoMatrizA);
+
     ///
 
     FILE *arquivoMatrizB;
@@ -185,6 +187,8 @@ int main(int argc, char *argv[]){
             desenfileirar(filaArquivoMatrizB);
         }
     }
+
+    free(filaArquivoMatrizB);
 
     ///
 
